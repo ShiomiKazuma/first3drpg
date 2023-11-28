@@ -4,8 +4,13 @@ using UnityEngine;
 
 public class PlayerMove : MonoBehaviour
 {
+    public Transform _camera;
     [SerializeField, Header("動くスピード")]
     float _moveSpeed = 0.5f;
+    [SerializeField, Header("マウス感度")]
+    float _mouseMove = 0.5f;
+    Vector3 move = Vector3.zero;
+    Vector3 rotation = Vector3.zero;
     // Start is called before the first frame update
     void Start()
     {
@@ -15,12 +20,62 @@ public class PlayerMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        var move = Vector3.zero;
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
+        
+    }
 
-        move = new Vector3(x, 0, z) * _moveSpeed;
+    void FixedUpdate()
+    {
+        Move();
+        Rotation();
+        _camera.transform.position = transform.position;
+    }
 
+    void Move()
+    {
+        move = Vector3.zero;
+        rotation = Vector3.zero;
+
+        if (Input.GetKey(KeyCode.W))
+        {
+            rotation.y = 0;
+            MoveSet();
+        }
+        if (Input.GetKey(KeyCode.S))
+        {
+            rotation.y = 180;
+            MoveSet();
+        }
+        if(Input.GetKey(KeyCode.A))
+        {
+            rotation.y = -90;
+            MoveSet();
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+            rotation.y = 90;
+            MoveSet();
+        }
+        
         transform.Translate(move);
+    }
+
+    void MoveSet()
+    {
+        move.z = _moveSpeed;
+        transform.eulerAngles = _camera.transform.eulerAngles + rotation;
+    }
+    void Rotation()
+    {
+        var speed = Vector3.zero;
+        //マウスの入力
+        if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            speed.y = -_mouseMove;
+        }
+        if (Input.GetKey(KeyCode.RightArrow))
+        {
+            speed.y = _mouseMove;
+        }
+        _camera.transform.eulerAngles += speed;
     }
 }
