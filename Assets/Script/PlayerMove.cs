@@ -11,6 +11,8 @@ public class PlayerMove : MonoBehaviour
     float _mouseMove = 0.5f;
     Vector3 move = Vector3.zero;
     Vector3 rotation = Vector3.zero;
+    [SerializeField] Animator _playerAnimator;
+    bool _isRun;
     // Start is called before the first frame update
     void Start()
     {
@@ -34,6 +36,7 @@ public class PlayerMove : MonoBehaviour
     {
         move = Vector3.zero;
         rotation = Vector3.zero;
+        _isRun = false;
 
         if (Input.GetKey(KeyCode.W))
         {
@@ -57,12 +60,14 @@ public class PlayerMove : MonoBehaviour
         }
         
         transform.Translate(move);
+        _playerAnimator.SetBool("IsRun", _isRun);
     }
 
     void MoveSet()
     {
         move.z = _moveSpeed;
         transform.eulerAngles = _camera.transform.eulerAngles + rotation;
+        _isRun = true;
     }
     void Rotation()
     {
