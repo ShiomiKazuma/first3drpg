@@ -13,6 +13,8 @@ public class PlayerMove : MonoBehaviour
     Vector3 rotation = Vector3.zero;
     [SerializeField] Animator _playerAnimator;
     bool _isRun;
+    [SerializeField] Collider _weaponCollider;
+    bool _canMove = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,18 +24,19 @@ public class PlayerMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-    }
-
-    void FixedUpdate()
-    {
         Move();
         Rotation();
+        Attack();
         _camera.transform.position = transform.position;
     }
 
     void Move()
     {
+        if(!_canMove)
+        {
+            return;
+        }
+
         move = Vector3.zero;
         rotation = Vector3.zero;
         _isRun = false;
@@ -82,5 +85,30 @@ public class PlayerMove : MonoBehaviour
             speed.y = _mouseMove;
         }
         _camera.transform.eulerAngles += speed;
+    }
+
+    void Attack()
+    {
+        if(Input.GetMouseButtonDown(0))
+        {
+            _playerAnimator.SetBool("Attack", true);
+            _canMove = false;
+        }
+    }
+
+    void WeaponON()
+    {
+        _weaponCollider.enabled = true;
+    }
+
+    void WeaponOFF()
+    {
+        _weaponCollider.enabled = false;
+        _playerAnimator.SetBool("Attack", false);
+    }
+
+    void CanMove()
+    {
+        _canMove = true;
     }
 }
