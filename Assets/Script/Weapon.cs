@@ -4,11 +4,17 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
+    [SerializeField] GameObject _effect;
+    [SerializeField] float _effectTime = 3.0f;
     private void OnTriggerEnter(Collider other)
     {
         if(other.tag == "Enemy")
         {
+            var effect = Instantiate(_effect);
+            effect.transform.position = other.transform.position;
+            //Instantiate(_effect, other.transform.position, Quaternion.identity);
             Destroy(other.gameObject);
+            Destroy(effect, _effectTime);
         }
     }
 }
