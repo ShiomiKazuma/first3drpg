@@ -15,6 +15,8 @@ public class PlayerMove : MonoBehaviour
     bool _isRun;
     [SerializeField] Collider _weaponCollider;
     bool _canMove = true;
+    [SerializeField] AudioSource _audioSource;
+    [SerializeField] AudioClip _attackSE;
     // Start is called before the first frame update
     void Start()
     {
@@ -93,6 +95,7 @@ public class PlayerMove : MonoBehaviour
         {
             _playerAnimator.SetBool("Attack", true);
             _canMove = false;
+            _audioSource.PlayOneShot(_attackSE);
         }
     }
 
