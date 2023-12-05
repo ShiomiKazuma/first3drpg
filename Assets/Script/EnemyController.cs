@@ -6,6 +6,7 @@ public class EnemyController : MonoBehaviour
 {
     [SerializeField] float _time = 3.0f;
     [SerializeField] float _enemySpeed = 0.5f;
+    GameObject _target;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,6 +19,26 @@ public class EnemyController : MonoBehaviour
         var speed = Vector3.zero;
         speed.z = _enemySpeed;
 
+        if(_target)
+        {
+            transform.LookAt(_target.transform);
+        }
         this.transform.Translate(speed);
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Player")
+        {
+            _target = other.gameObject;
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if(other.tag == "Player")
+        {
+            _target = null;
+        }
     }
 }
