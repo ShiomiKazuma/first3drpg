@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StatusManager : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class StatusManager : MonoBehaviour
     [SerializeField] AudioSource _audioSource;
     [SerializeField] AudioClip _hitSE;
     [SerializeField] string _tagName;
-
+    [SerializeField] Slider _hpSlider;
     private void Update()
     {
         if(_currentHp <= 0)
@@ -24,6 +25,9 @@ public class StatusManager : MonoBehaviour
             this.enabled = false;
             Destroy(_main.gameObject);
         }
+
+        float percent = (float)_currentHp / (float)_maxHp;
+        _hpSlider.value = percent;
     }
     private void OnTriggerEnter(Collider other)
     {
