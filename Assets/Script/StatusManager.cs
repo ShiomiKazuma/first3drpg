@@ -14,6 +14,13 @@ public class StatusManager : MonoBehaviour
     [SerializeField] AudioClip _hitSE;
     [SerializeField] string _tagName;
     [SerializeField] Slider _hpSlider;
+    [SerializeField] float _damageInterval = 2.0f;
+    Collider _collider;
+
+    private void Start()
+    {
+        _collider = GetComponent<Collider>();
+    }
     private void Update()
     {
         if(_currentHp <= 0)
@@ -34,6 +41,8 @@ public class StatusManager : MonoBehaviour
         if (other.tag == _tagName)
         {
             Damage();
+            _collider.enabled = false;
+            Invoke("ColliderReset", _damageInterval);
         }
     }
 
@@ -41,5 +50,10 @@ public class StatusManager : MonoBehaviour
     {
         _audioSource.PlayOneShot(_hitSE);
         _currentHp--;
+    }
+
+    void ColliderReset()
+    {
+        _collider.enabled = true;
     }
 }
