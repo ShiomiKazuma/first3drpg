@@ -22,8 +22,13 @@ public class EnemyController : MonoBehaviour
         if(_target)
         {
             transform.LookAt(_target.transform);
+            this.transform.Translate(speed);
         }
-        this.transform.Translate(speed);
+
+        var rot = transform.eulerAngles;
+        rot.x = 0;
+        rot.z = 0;
+        transform.eulerAngles = rot;
     }
 
     void OnTriggerEnter(Collider other)
