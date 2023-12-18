@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-    [SerializeField] float _time = 3.0f;
+    float _timer = 0;
+    [SerializeField] float _changeTime = 10.0f;
     [SerializeField] float _enemySpeed = 0.5f;
     GameObject _target;
     // Start is called before the first frame update
     void Start()
     {
-        //Destroy(this.gameObject, _time);
+        
     }
 
     // Update is called once per frame
@@ -18,17 +19,28 @@ public class EnemyController : MonoBehaviour
     {
         var speed = Vector3.zero;
         speed.z = _enemySpeed;
-
-        if(_target)
-        {
-            transform.LookAt(_target.transform);
-            this.transform.Translate(speed);
-        }
-
         var rot = transform.eulerAngles;
+        if (_target)
+        {
+            //ターゲットの方に向く
+            transform.LookAt(_target.transform);
+            rot = transform.eulerAngles;
+        }
+        else
+        {
+            _timer += Time.deltaTime;
+            if( _timer >= _changeTime)
+            {
+                //ランダムでうろつく
+                var rand = Random.Range(0, 360);
+                rot.y = rand;
+                _timer = 0;
+            }
+        }
         rot.x = 0;
         rot.z = 0;
         transform.eulerAngles = rot;
+        this.transform.Translate(speed);
     }
 
     void OnTriggerEnter(Collider other)
